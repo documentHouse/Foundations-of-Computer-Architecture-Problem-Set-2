@@ -123,20 +123,58 @@ Problem 5 \\
 \end{flushleft} 
 \framebox{Part a}\\ 
 
+The MIPS instruction sequence for adding an immediate value to a signed value in \$7 consists of one instruction. 
+\[ \text{addi} \; \$7,\$7,15  \quad \quad \# \$7 = \$7 + 15 \] \\
+
 \noindent \framebox{Part b}\\ 
 
-
+To perform the addition manually first we need to find the two's complement representation of -134217728. Since $134217728_{ten} = 00001000 00000000 00000000 00000000_{two}$ we have 
+\[ -134217728_{ten} = 11111000 00000000 00000000 00000000_{two} \]
+Since $15_{ten} = 00000000 00000000 00000000 00001111_{two}$ we can perform the addition to get the value in register \$7
+\[ \$7 = 11111000 00000000 00000000 00001111_{two} =  -134217713_{ten}\] \\
 
 \noindent \framebox{Part c}\\ 
 
+The main issue is moving the immediate value 15.0 into one of the floating point registers so that addition can be performed on it. Since there is no true-op instruction that loads immediate values into floating point registers we will need a different strategy. The plan will be to move the immediate value into a integer with an \emph{addi} instruction. We will then transfer the value to a floating point register and convert it to a floating point value. At this point we can use the floating point operations. The instruction sequence is as follows:\\
 
+\begin{tabular}{l l l}
+addi \quad &\$t0,\$zero,15 \qquad & \# Load 15 into \$t0\\
+mtc1 \quad &\$t0,\$f0 & \# Move 15 to a floating point register \\
+cvt.s.w \quad &\$f0,\$f6 & \# Convert the integer to a floating point value 15.0\\
+add.s \quad & \$f4,\$f4,\$f6 & \# Perform \$f4 = \$f4 + 15.0 \\ 
+\end{tabular} \\ \\
 
 \noindent \framebox{Part d}\\ 
 
+We are trying to perform the computation with the following values;
 
+ \begin{eqnarray*}
+-134217728_{ten} &=& -1.0_{two} \times 2^{27} \\
+15_{ten} &=& 1.111_{two} \times 2^3 \\
+\end{eqnarray*}
 
-\noindent \framebox{Part e}\\ 
+The algorithm for computing a floating point addition says that first we need to find the larger of two exponents for the values and shift the smaller value til the exponents are the same.\newpage \noindent Performing this operation gives:
 
+ \begin{eqnarray*}
+-134217728_{ten} &=& -1.0_{two} \times 2^{27} \\
+15_{ten} &=& 0.00000000 00000000 0000000 1111_{two} \times 2^{27} \\
+\end{eqnarray*}
 
+The significand of a single precision value can only store 23-bits. If we do not round the values and truncate at the 23rd bit then we will have 
+\[ 15_{ten} = 0.00000000 00000000 0000000_{two} \times 2^{27} \]
 
+So the decimal value 15 gets truncated to 0. The final value in the float point register, \$f4 after the addition of zero will be the original value so 
+\[ \$\text{f}4 = -1.0_{two} \times 2^{27} = -134217728 \]
+
+\noindent \framebox{Part e}
+
+We perform the same steps as in the part d of this problem except in this case we round the shifted version of 15 so that we now have:
+ \begin{eqnarray*}
+-134217728_{ten} &=& -1.0_{two} \times 2^{27} \\
+15_{ten} &=& 0.00000000 00000000 0000001 _{two} \times 2^{27} \\
+\end{eqnarray*}
+
+\noindent Adding these values gives
+
+\[ \$\text{f}4 = -0.11111111 11111111 1111111_{two} \times 2^{27} = -11111111 11111111 11111110000_{two} \times 2^0 = -134217712 \]
 \end{document}  
