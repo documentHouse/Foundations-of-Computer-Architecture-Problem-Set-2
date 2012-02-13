@@ -32,31 +32,90 @@ Problem 1 \\
 \rule{500pt}{1pt}\\
 \end{flushleft} 
 \framebox{Part a}\\ 
+ First we convert the decimal values to their two's complement representation:
+ \begin{eqnarray*}
+-2147483648_{ten} &=& 10000000000000000000000000000000_{two} \\
+-4_{ten} &=& 11111111111111111111111111111100_{two} \\
+\end{eqnarray*}
+
+\noindent The instruction \emph{addu} \$8,\$9,\$8 will add the contents of \$9 to the contents of \$8 and store the result back in \$8. This is an unsigned addition so there will be no overflow exception. Summing the values in the registers gives the following result
+\[
+\$8 = 01111111111111111111111111111100_{two} = 2147483644_{ten}\\
+\]
 
 \noindent\framebox{Part b}\\ 
-
-
+\noindent The instruction \emph{xor} \$9,\$8,\$9 will perform an exclusive-or on the contents of \$8 with the contents of \$9 and store the result back in \$9. Performing the operation gives the following result.
+\[
+\$9 = 01111111111111111111111111111100_{two} = 2147483644_{ten}\\
+\]
+In effect xoring two registers results in the same value as an addition without an overflow exception.
 \begin{flushleft} 
 Problem 2 \\
 \rule{500pt}{1pt}\\
 \end{flushleft} 
 \framebox{Part a}\\ 
-
+In an excess-$K$ system the intended value is $K$ less than the unsigned binary value. As an unsigned binary value we have
+\[ \text{0xAFFFFFFF}_{hex} = 10101111111111111111111111111111_{two} = 2952790015_{ten} \]
+So the represented value must be $2952790015-2147483648 = 805306367_{excess-2147483648}$\\
 
 \noindent \framebox{Part b}\\ 
+Since the intended value in an excess-$K$ system is $K$ less than the unsigned binary value and the smallest unsigned binary value is 0 then the small representable value is $-65540$.\\
 
+\noindent \framebox{Part c}\\ 
+We indicate below for which given system -128 maybe represented.\\
+
+\noindent I. \hspace{12pt}Excess-128 system\\
+\indent Yes, -128 is represented as 00000000.\\
+
+\noindent II. \hspace{7pt}One's complement\\
+\indent No, the smallest value is -127.\\
+
+\noindent III. \hspace{3pt}Sign and Magnitude\\
+\indent No, the smallest value is -127\\
+
+\noindent IV. \hspace{3pt}Two's complement\\
+\indent Yes, -128 is represented by 11111111\\
 
 \begin{flushleft} 
 Problem 3 \\
 \rule{500pt}{1pt}\\
 \end{flushleft} 
+First we need to convert the decimal value to binary. We keep the leading zeros in the binary expression below to make the number 64 bits.
+\[ 3904679375210100017_{ten} = 0011011000110000001101010011010000110001001100010011010100110001_{two}\]
 
+\noindent Now we need to convert each set of 8 bits to its corresponding decimal then match it to the table that defines the decimal to ASCII conversion.\\
+
+\begin{tabular}{| l | c | c | l |}
+\hline
+Byte Address & Binary Value & Decimal Value &ASCII character represented by contents \\ \hline
+0x10080000 & 00110110 & 54 & 6\\ \hline
+0x10080001 & 00110000 & 48 & 0\\ \hline
+0x10080002 & 00110101 & 53 & 5\\ \hline
+0x10080003 & 00110100 & 52 & 4\\ \hline
+0x10080004 & 00110001 & 49 & 1\\ \hline
+0x10080005 & 00110001 & 49 & 1\\ \hline
+0x10080006 & 00110101 & 53 & 5\\ \hline
+0x10080007 & 00110001 & 49 & 1\\ \hline
+\end{tabular}
 
 \begin{flushleft} 
 Problem 4 \\
 \rule{500pt}{1pt}\\
 \end{flushleft} 
+The table below indicates whether a given item is an architectural feature or an organizational feature.\\
 
+\begin{tabular}{| l | c | c |}
+\hline
+Item & Architectural feature & Organizational feature \\ \hline
+Cache memory & & \checkmark \\ \hline
+Multiplexed I/O bus & & \checkmark \\ \hline
+Indexed addressing mode & \checkmark & \\ \hline
+128-bit CPU registers & \checkmark & \\ \hline
+Flash based storage & & \checkmark \\ \hline
+Vector instruction & \checkmark & \\ \hline
+Micro-programmed control & & \checkmark \\ \hline
+USB-serial I/O port & & \checkmark \\ \hline
+\end{tabular}
 
 \begin{flushleft} 
 Problem 5 \\
@@ -66,10 +125,18 @@ Problem 5 \\
 
 \noindent \framebox{Part b}\\ 
 
+
+
 \noindent \framebox{Part c}\\ 
+
+
 
 \noindent \framebox{Part d}\\ 
 
+
+
 \noindent \framebox{Part e}\\ 
+
+
 
 \end{document}  
